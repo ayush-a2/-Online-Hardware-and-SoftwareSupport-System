@@ -69,6 +69,7 @@ return msg;
 		ResultSet rs=ps.executeQuery();			
 		if(Dbutilis.isResultEmpty(rs)) {
 			System.out.println("No data found");
+			throw new InvalidCredentialsException("Incorret Username And Password");
 		}
 		if(rs.next()) {
 			login="Welcome"+" "+rs.getString("username");		
@@ -211,6 +212,10 @@ return login;
  	    try (PreparedStatement statement = conn.prepareStatement(query)) {
  	        statement.setInt(1, employeeId);
  	        try (ResultSet resultSet = statement.executeQuery()) {
+ 	        	
+ 	        	if(Dbutilis.isResultEmpty(resultSet)) {
+ 	        		System.out.println("No complaint raised By this ID:"+ employeeId);
+ 	        	}
  	            while (resultSet.next()) {
  	                int problemId = resultSet.getInt("problem_id");
  	                int complainId = resultSet.getInt("complain_id");

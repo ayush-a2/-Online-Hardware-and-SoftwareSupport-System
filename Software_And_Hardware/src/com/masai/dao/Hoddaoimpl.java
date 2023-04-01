@@ -5,11 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.masai.exception.InvalidCredentialsException;
+import com.masai.exception.*;
+
 
 public class Hoddaoimpl implements HodDao {
 	@Override
-	public String login(String username, String password) throws InvalidCredentialsException {
+	public String login(String username, String password) throws InvalidCredentialsException,NoRecordFoundException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
 		String login="Invalid Credential";
@@ -22,6 +23,7 @@ public class Hoddaoimpl implements HodDao {
 		ResultSet rs=ps.executeQuery();			
 		if(Dbutilis.isResultEmpty(rs)) {
 			System.out.println("No data found");
+			throw new NoRecordFoundException("Invalid username or password");
 		}
 		if(rs.next()) {
 			login="Welcome"+" "+rs.getString("username");		
