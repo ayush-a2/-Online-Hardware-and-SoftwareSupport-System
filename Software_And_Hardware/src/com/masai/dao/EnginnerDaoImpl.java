@@ -141,7 +141,7 @@ return login;
 }
 
 	@Override
-	public String login(String username, String password) throws InvalidCredentialsException {
+	public String login(String username, String password) throws InvalidCredentialsException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		Connection conn=null;
 		String login="Invalid Credential";
@@ -154,6 +154,7 @@ return login;
 		ResultSet rs=ps.executeQuery();			
 		if(Dbutilis.isResultEmpty(rs)) {
 			System.out.println("No data found");
+			throw new NoRecordFoundException("Invalid Username and Password");
 		}
 		if(rs.next()) {
 			login="Welcome"+" "+rs.getString("username");		
