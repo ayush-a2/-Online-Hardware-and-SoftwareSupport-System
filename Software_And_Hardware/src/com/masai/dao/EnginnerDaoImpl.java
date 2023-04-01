@@ -9,7 +9,9 @@ import java.util.List;
 
 import com.masai.dto.EngineerDto;
 import com.masai.dto.EngineerDtoImpl;
-
+import com.masai.dto.ProblemDto;
+import com.masai.dto.ProblemDtoImpl;
+import com.masai.exception.InvalidCredentialsException;
 import com.masai.exception.NoRecordFoundException;
 import com.masai.exception.SomethingWentWrongException;
 
@@ -113,7 +115,7 @@ return login;
 		            deleteProblemStmt.setInt(1, engineer_id);
 		            int numDeleted = deleteProblemStmt.executeUpdate();
 		            deleteProblemStmt.close();
-//		            msg = "Deleted " + numDeleted + " related problem records. ";
+	            msg = "Deleted " + numDeleted + " related problem records. ";
 		        }
 		        
 		        // Delete the engineer record
@@ -137,4 +139,181 @@ return login;
 		    }
 		    return msg;
 }
+
+	@Override
+	public String login(String username, String password) throws InvalidCredentialsException {
+		// TODO Auto-generated method stub
+		Connection conn=null;
+		String login="Invalid Credential";
+		try {
+			conn=Dbutilis.connectToDb();
+			String query="SELECT * from engineer WHERE username = ? AND password = ?";
+			PreparedStatement ps= conn.prepareStatement(query);
+		ps.setString(1,username);
+		ps.setString(2, password);
+		ResultSet rs=ps.executeQuery();			
+		if(Dbutilis.isResultEmpty(rs)) {
+			System.out.println("No data found");
+		}
+		if(rs.next()) {
+			login="Welcome"+" "+rs.getString("username");		
+			
+		}
+		
+		
+	}catch(SQLException | ClassNotFoundException e) {
+		  throw new InvalidCredentialsException("Error in login");
+	}finally {
+		if(conn!=null) {
+			try {
+				try {
+					Dbutilis.closeConnection(conn);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				};
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+return login;
+	}
+
+
+
+	@Override
+	public List<ProblemDto> getProblemsByEngineerId(int engineer_Id) throws SQLException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+		   Connection conn = null;
+		    List<ProblemDto> problems = new ArrayList<>();
+		    try {
+		        conn = Dbutilis.connectToDb();
+		        String query = "SELECT * FROM problem WHERE engineer_Id = ?";
+		        PreparedStatement ps = conn.prepareStatement(query);
+		        ps.setInt(1, engineer_Id);
+		        ResultSet rs = ps.executeQuery();
+		        while (rs.next()) {
+		            ProblemDto problem = new ProblemDtoImpl(rs.getInt("problem_id"),rs.getInt("complain_id"),rs.getString("problem_desc"),rs.getString("status"),rs.getInt("engineer_id"));
+		 
+		            problems.add(problem);
+		        }
+		    } finally {
+		        if (conn != null) {
+		          Dbutilis.closeConnection(conn);
+		        }
+		    }
+		    return problems;
+	}
+	 @Override
+	    public void updateProblemStatus(int problem_Id, String Status) throws SQLException, ClassNotFoundException {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        try {
+	            conn = Dbutilis.connectToDb();
+	            String query = "UPDATE problem SET status = ? WHERE problem_id = ?";
+	            ps = conn.prepareStatement(query);
+	            ps.setString(1, Status);
+	            ps.setInt(2, problem_Id);
+	            int updatedRows = ps.executeUpdate();
+	            if (updatedRows == 0) {
+	                throw new SQLException("No rows updated");
+	            }
+	            System.out.println("Updated SucessFully");
+	        } finally {
+	          Dbutilis.closeConnection(conn);
+	        }
+	    }
+	 @Override
+	 public List<ProblemDto> getProblemsAttendedByEngineer(int engineerId) throws SQLException, ClassNotFoundException {
+		    Connection conn = null;
+		    PreparedStatement stmt = null;
+		    ResultSet rs = null;
+		    List<ProblemDto> problems = new ArrayList<>();
+		    try {
+		        conn = Dbutilis.connectToDb();
+		        String query = "SELECT * FROM problem WHERE  engineer_id= ?";
+		        stmt = conn.prepareStatement(query);
+		        stmt.setInt(1, engineerId);
+		        rs = stmt.executeQuery();
+		        while (rs.next()) {
+		            ProblemDto problem = new ProblemDtoImpl(rs.getInt("problem_id"), rs.getInt("complain_id"), rs.getString("problem_desc"), rs.getString("status"), rs.getInt("engineer_id"));
+		            problem.setStatus(rs.getString("status"));
+		            problems.add(problem);
+		        }
+		    } finally {
+		      Dbutilis.closeConnection(conn);
+		    }
+		    return problems;
+		}
+	 @Override
+	 public void changePassword(int  engineer_id, String Password, String newPassword) throws InvalidCredentialsException {
+//		    Connection conn = null;
+//		    try {
+//		        conn = Dbutilis.connectToDb();
+//		        String query = "SELECT * FROM engineer WHERE engineer_id = ? AND password = ?";
+//		        PreparedStatement ps = conn.prepareStatement(query);
+//		        ps.setInt(1,  engineer_id);
+//		        ps.setString(2, Password);
+//		        ResultSet rs = ps.executeQuery();
+//		        if (Dbutilis.isResultEmpty(rs)) {
+//		            throw new InvalidCredentialsException("Invalid old password");
+//		        }
+//		        query = "UPDATE engineer SET password = ? WHERE  engineer_id = ?";
+//		        ps = conn.prepareStatement(query);
+//		        ps.setString(1, newPassword);
+//		        ps.setInt(2,  engineer_id);
+//		        int rowsUpdated = ps.executeUpdate();
+//		        if (rowsUpdated == 0) {
+//		            throw new SQLException("Password update failed, please try again later.");
+//		        }
+//		        System.out.println("Password updated successfully for engineer with ID: " +  engineer_id);
+//		    } catch (SQLException | ClassNotFoundException e) {
+//		        throw new InvalidCredentialsException("Error changing password");
+//		    } finally {
+//		        if (conn != null) {
+//		            try {
+//		              Dbutilis.closeConnection(conn);
+//		            } catch (SQLException | ClassNotFoundException e) {
+//		                e.printStackTrace();
+//		            }
+//		        }
+//		    }
+//		}
+		 Connection conn = null;
+		 try {
+		     conn = Dbutilis.connectToDb();
+		     String query = "SELECT username FROM engineer WHERE engineer_id = ?";
+		     PreparedStatement ps = conn.prepareStatement(query);
+		     ps.setInt(1, engineer_id);
+		     ResultSet rs = ps.executeQuery();
+		     String username = "";
+		     if (rs.next()) {
+		         username = rs.getString("username");
+		     }
+		     query = "UPDATE engineer SET password = ? WHERE engineer_id = ?";
+		     ps = conn.prepareStatement(query);
+		     ps.setString(1, newPassword);
+		     ps.setInt(2, engineer_id);
+		     int rowsUpdated = ps.executeUpdate();
+		     if (rowsUpdated == 0) {
+		         throw new SQLException("Password update failed, please try again later.");
+		     }
+		     System.out.println("Password updated successfully for engineer " + username + " with ID: " + engineer_id);
+		 } catch (SQLException | ClassNotFoundException e) {
+		     throw new InvalidCredentialsException("Error changing password");
+		 } finally {
+		     if (conn != null) {
+		         try {
+		             Dbutilis.closeConnection(conn);
+		         } catch (SQLException | ClassNotFoundException e) {
+		             e.printStackTrace();
+		         }
+		     }
+		 }
+		 
+		 
+	 }
+	
 }

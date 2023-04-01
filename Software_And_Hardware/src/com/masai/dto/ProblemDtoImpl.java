@@ -6,14 +6,22 @@ public class ProblemDtoImpl implements ProblemDto{
 	    private String problemDesc;
 	    private String status;
 	    private int engineerId;
+
+	
+
+
 		public ProblemDtoImpl(int problemId, int complainId, String problemDesc, String status, int engineerId) {
-			super();
-			this.problemId = problemId;
-			this.complainId = complainId;
-			this.problemDesc = problemDesc;
-			this.status = status;
-			this.engineerId = engineerId;
-		}
+		super();
+		this.problemId = problemId;
+		this.complainId = complainId;
+		this.problemDesc = problemDesc;
+		this.status = status;
+		this.engineerId = engineerId;
+	
+	}
+		
+	
+
 		public int getProblemId() {
 			return problemId;
 		}
@@ -47,7 +55,7 @@ public class ProblemDtoImpl implements ProblemDto{
 		@Override
 		public String toString() {
 			return "ProblemDtoImpl [problemId=" + problemId + ", complainId=" + complainId + ", problemDesc="
-					+ problemDesc + ", status=" + status + ", engineerId=" + engineerId + "]";
+					+ problemDesc + ", status=" + status +  "]";
 		}
 		
 }
