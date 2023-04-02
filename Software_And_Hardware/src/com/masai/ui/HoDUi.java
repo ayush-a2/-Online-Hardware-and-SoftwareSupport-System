@@ -57,7 +57,7 @@ Enginnerdao ed= new EnginnerDaoImpl();
 	Enginnerdao ed=new EnginnerDaoImpl();
 	try {
 	String msg =	ed.deleteEngineer(enginner_id);
-	System.out.println(msg);
+	System.out.println("\u001B[31m" + msg + "\u001B[0m");
 		
 	} catch (NoRecordFoundException e) {
 		// TODO Auto-generated catch block
@@ -79,7 +79,7 @@ Enginnerdao ed= new EnginnerDaoImpl();
 		
 		System.out.println("Enter Problem ID");
 		int problem_id=sc.nextInt();
-		System.out.println("Enter EngineervID");
+		System.out.println("Enter EngineerID");
 		int Enginner_id=sc.nextInt();
 		Problemdao pd=new ProblemdaoImpl();
 	try {

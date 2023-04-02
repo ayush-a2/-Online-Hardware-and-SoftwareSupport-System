@@ -22,7 +22,7 @@ public class EmployeeDtoImpl implements EmployeeDto {
 	}
 	@Override
 	public String toString() {
-		return "EmployeeDtoImpl [username=" + username + ", password=" + password + "]";
+		return "Employee username=" + username + ", password=" + password + " ";
 	}
 
 }

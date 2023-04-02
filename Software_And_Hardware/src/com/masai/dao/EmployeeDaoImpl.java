@@ -204,30 +204,47 @@ return login;
 		        }
 		    }
 	}
-	public List<ProblemDto> getComplaintHistory(int employeeId) throws SQLException, ClassNotFoundException {
-		Connection conn = null;
- 	    conn = Dbutilis.connectToDb();
- 	   List<ProblemDto> complaintList = new ArrayList<>();
- 	    String query = "SELECT p.problem_id, p.complain_id, p.problem_desc, p.status, p.engineer_id FROM problem p JOIN employee_problem ep ON p.problem_id = ep.problem_id WHERE ep.employee_id = ?";
- 	    try (PreparedStatement statement = conn.prepareStatement(query)) {
- 	        statement.setInt(1, employeeId);
- 	        try (ResultSet resultSet = statement.executeQuery()) {
- 	        	
- 	        	if(Dbutilis.isResultEmpty(resultSet)) {
- 	        		System.out.println("No complaint raised By this ID:"+ employeeId);
- 	        	}
- 	            while (resultSet.next()) {
- 	                int problemId = resultSet.getInt("problem_id");
- 	                int complainId = resultSet.getInt("complain_id");
- 	                String problemDesc = resultSet.getString("problem_desc");
- 	                String status = resultSet.getString("status");
- 	                int engineerId = resultSet.getInt("engineer_id");
- 	                ProblemDto problem = new ProblemDtoImpl(problemId, complainId, problemDesc, status, engineerId);
- 	                complaintList.add(problem);
- 	            }
- 	        }
- 	    }
- 	    return complaintList;
+	public String getComplaintHistory(int employeeId) throws SQLException, ClassNotFoundException {
+		  Connection conn = null;
+		    String result = "";
+		    try {
+		        conn = Dbutilis.connectToDb();
+		        String query = "SELECT p.problem_id, p.complain_id, p.problem_desc, p.status, e.username as engineer_username " +
+		                       "FROM problem p " +
+		                       "JOIN engineer e ON p.engineer_id = e.engineer_id " +
+		                       "JOIN employee_problem ep ON p.problem_id = ep.problem_id " +
+		                       "WHERE ep.employee_id = ?";
+		        PreparedStatement stmt = conn.prepareStatement(query);
+		        stmt.setInt(1, employeeId);
+		        ResultSet rs = stmt.executeQuery();
+		        if (!rs.next()) {
+		            result = "No complaints raised by this employee.";
+		        } else {
+		            result = "Complaint history for employee " + employeeId + ":\n";
+		            do {
+		                int problem_id = rs.getInt("problem_id");
+		                int complain_id = rs.getInt("complain_id");
+		                String problem_desc = rs.getString("problem_desc");
+		                String status = rs.getString("status");
+		                String engineer_username = rs.getString("engineer_username");
+		                result += String.format("Problem ID: %d, Complain ID: %d, Description: %s, Status: %s, Engineer: %s\n", problem_id, complain_id, problem_desc, status, engineer_username);
+		            } while (rs.next());
+		        }
+		        rs.close();
+		        stmt.close();
+		    } catch (SQLException | ClassNotFoundException e) {
+		        e.printStackTrace();
+		        result = "Error: " + e.getMessage();
+		    } finally {
+		        try {
+		            if (conn != null) {
+		                conn.close();
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		    return result;
 	}
 
 	@Override

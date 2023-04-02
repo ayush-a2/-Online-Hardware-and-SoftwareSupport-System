@@ -16,7 +16,7 @@ static void displayHodMenu() {
 	System.out.println("0. Logout");
 }
 static void displayEngineerMenu() {
-	System.out.println("1.Engineeer View The Assigned Problem");
+	System.out.println("1.Engineeer View  Problem Assigned By Hod");
 	System.out.println("2.Update Status Of Problem");
 	System.out.println("3.List Of problem Attended By ");
 	System.out.println("4.Enginner Can Change Password");
@@ -71,15 +71,15 @@ static void EngineerLogin(Scanner sc) throws NoRecordFoundException {
 		switch(choice) {
 		case 0:System.out.println("Thank you, Visit again");
 		break;
-		case 1:EngineerUi.viewProblems(sc);
-		break;
+		
 		case 2:EngineerUi.updateStatus(sc);
 		break;
 		case 3:EngineerUi.viewProblemsAttendedByEngineer(sc);
 		break;
 		case 4:EngineerUi.changePassword(sc);
 		break;
-	
+		case 1:EngineerUi.getComplaintsForEngineer(sc);
+		break;
 			default:
 				System.out.println("Invalid Selection, try again");
 		}

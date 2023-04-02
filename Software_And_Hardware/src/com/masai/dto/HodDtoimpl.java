@@ -28,7 +28,7 @@ public class HodDtoimpl implements HodDto  {
 		}
 		@Override
 		public String toString() {
-			return "HodDtoimpl [username=" + username + ", password=" + password + "]";
+			return "username=" + username + ", password=" + password + " ";
 		}
 
 	    

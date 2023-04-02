@@ -54,8 +54,8 @@ public class ProblemDtoImpl implements ProblemDto{
 		}
 		@Override
 		public String toString() {
-			return "ProblemDtoImpl [problemId=" + problemId + ", complainId=" + complainId + ", problemDesc="
-					+ problemDesc + ", status=" + status +  "]";
+			return "problemId=" + problemId + ", complainId=" + complainId + ", problemDesc="
+					+ problemDesc + ", status=" + status +   "";
 		}
 		
 }

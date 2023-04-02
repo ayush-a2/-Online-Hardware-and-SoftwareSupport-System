@@ -16,6 +16,6 @@ public int registerComplaint(String problemDesc, int employeeId,int complaint_Id
 public ProblemDto getProblemByComplainId(int complainId) throws SQLException, ClassNotFoundException;
 EngineerDto getEngineerById(int engineerId) throws SQLException, ClassNotFoundException;
 public String getStatusByComplainId(int complainId, int employeeId) throws SQLException, ClassNotFoundException;
-public List<ProblemDto> getComplaintHistory(int employeeId) throws SQLException, ClassNotFoundException;
+public String getComplaintHistory(int employeeId) throws SQLException, ClassNotFoundException;
 public void changePassword(int  employee_id, String Password, String newPassword) throws InvalidCredentialsException;
 }

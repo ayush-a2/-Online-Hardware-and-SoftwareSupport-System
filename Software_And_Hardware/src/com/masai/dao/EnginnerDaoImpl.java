@@ -93,51 +93,61 @@ return login;
 	@Override
 	public String deleteEngineer(int engineer_id) throws NoRecordFoundException {
 		// TODO Auto-generated method stub
-		   Connection conn = null;
-		    String msg = null;
-		    try {
-		        conn = Dbutilis.connectToDb();
-		        
-		        // Check if there are any related records in the problem table
-		        String checkQuery = "SELECT COUNT(*) FROM problem WHERE engineer_id = ?";
-		        PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
-		        checkStmt.setInt(1, engineer_id);
-		        ResultSet checkRs = checkStmt.executeQuery();
-		        checkRs.next();
-		        int numRelatedRecords = checkRs.getInt(1);
-		        checkRs.close();
-		        checkStmt.close();
-		        
-		        // Delete any related records in the problem table
-		        if (numRelatedRecords > 0) {
-		            String deleteProblemQuery = "DELETE FROM problem WHERE engineer_id = ?";
-		            PreparedStatement deleteProblemStmt = conn.prepareStatement(deleteProblemQuery);
-		            deleteProblemStmt.setInt(1, engineer_id);
-		            int numDeleted = deleteProblemStmt.executeUpdate();
-		            deleteProblemStmt.close();
-	            msg = "Deleted " + numDeleted + " related problem records. ";
-		        }
-		        
-		        // Delete the engineer record
-		        String deleteEngineerQuery = "DELETE FROM engineer WHERE engineer_id = ?";
-		        PreparedStatement deleteEngineerStmt = conn.prepareStatement(deleteEngineerQuery);
-		        deleteEngineerStmt.setInt(1, engineer_id);
-		        int numDeleted = deleteEngineerStmt.executeUpdate();
-		        deleteEngineerStmt.close();
-		        msg = "Deleted " + numDeleted + " engineer record(s).";
-		        
-		    } catch (SQLException | ClassNotFoundException e) {
-		        throw new NoRecordFoundException("No record found");
-		    } finally {
-		        try {
-		            if (conn != null) {
-		                conn.close();
-		            }
-		        } catch (SQLException e) {
-		            e.printStackTrace();
-		        }
+		Connection conn = null;
+		String msg ="";
+		try {
+		    conn = Dbutilis.connectToDb();
+
+		    // Retrieve the engineer's name
+		    String getEngineerNameQuery = "SELECT username FROM engineer WHERE engineer_id = ?";
+		    PreparedStatement getEngineerNameStmt = conn.prepareStatement(getEngineerNameQuery);
+		    getEngineerNameStmt.setInt(1, engineer_id);
+		    ResultSet getEngineerNameRs = getEngineerNameStmt.executeQuery();
+		    getEngineerNameRs.next();
+		    String engineerName = getEngineerNameRs.getString("username");
+		    getEngineerNameRs.close();
+		    getEngineerNameStmt.close();
+
+		    // Check if there are any related records in the problem table
+		    String checkQuery = "SELECT COUNT(*) FROM problem WHERE engineer_id = ?";
+		    PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
+		    checkStmt.setInt(1, engineer_id);
+		    ResultSet checkRs = checkStmt.executeQuery();
+		    checkRs.next();
+		    int numRelatedRecords = checkRs.getInt(1);
+		    checkRs.close();
+		    checkStmt.close();
+
+		    // Delete any related records in the problem table
+		    if (numRelatedRecords > 0) {
+		        String deleteProblemQuery = "DELETE FROM Engineer WHERE engineer_id = ?";
+		        PreparedStatement deleteProblemStmt = conn.prepareStatement(deleteProblemQuery);
+		        deleteProblemStmt.setInt(1, engineer_id);
+		        int numDeleted = deleteProblemStmt.executeUpdate();
+		        deleteProblemStmt.close();
+		        msg = "Deleted " + numDeleted + " related problem records. ";
 		    }
-		    return msg;
+
+		    // Delete the engineer record
+		    String deleteEngineerQuery = "DELETE FROM engineer WHERE engineer_id = ?";
+		    PreparedStatement deleteEngineerStmt = conn.prepareStatement(deleteEngineerQuery);
+		    deleteEngineerStmt.setInt(1, engineer_id);
+		    int numDeleted = deleteEngineerStmt.executeUpdate();
+		    deleteEngineerStmt.close();
+		    msg += "Deleted " + numDeleted + " engineer record(s) for " + engineerName + ".";
+
+		} catch (SQLException | ClassNotFoundException e) {
+		    throw new NoRecordFoundException("No record found");
+		} finally {
+		    try {
+		        if (conn != null) {
+		            conn.close();
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+		return msg;
 }
 
 	@Override
@@ -316,5 +326,32 @@ return login;
 		 
 		 
 	 }
+
+	@Override
+	public String getComplaintsForEngineer(int engineerId) throws SQLException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+		 Connection conn = null;
+		    conn = Dbutilis.connectToDb();
+		 StringBuilder result = new StringBuilder();
+		    String query = "SELECT p.problem_id, p.complain_id, p.problem_desc, p.status, e.username as engineer_username " +
+		                   "FROM problem p " +
+		                   "JOIN engineer e ON p.engineer_id = e.engineer_id " +
+		                   "WHERE p.engineer_id = ?";
+		    try (PreparedStatement statement = conn.prepareStatement(query)) {
+		        statement.setInt(1, engineerId);
+		        try (ResultSet resultSet = statement.executeQuery()) {
+		            while (resultSet.next()) {
+		                int problemId = resultSet.getInt("problem_id");
+		                int complainId = resultSet.getInt("complain_id");
+		                String problemDesc = resultSet.getString("problem_desc");
+		                String status = resultSet.getString("status");
+		                String engineerUsername = resultSet.getString("engineer_username");
+		                result.append(String.format("Problem ID: %d | Complain ID: %d | Problem Description: %s | Status: %s | Assigned Engineer: %s%n", 
+		                	problemId, complainId, problemDesc, status, engineerUsername));
+		            }
+		        }
+		    }
+		    return result.toString();
+	}
 	
 }
