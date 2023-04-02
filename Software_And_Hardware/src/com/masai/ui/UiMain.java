@@ -120,6 +120,9 @@ static void HODLogin(Scanner sc) {
 	public static void main(String[] args) throws NoRecordFoundException {
 	Scanner sc = new Scanner(System.in);
 	int choice = 0;
+	System.out.println("-------------------------------------------------------------");
+	System.out.println("<==========  Welcome To Online Hardware and Software Support System Mini Project ================>");
+	System.out.println("-------------------------------------------------------------");
 	do {
 	System.out.println("1. HOD Login\n2. Engineer Login\n3. Employee Login\n0. Exit");	
 	choice = sc.nextInt();
