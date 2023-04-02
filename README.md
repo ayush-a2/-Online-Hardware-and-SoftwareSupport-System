@@ -1,25 +1,12 @@
-# MGNREGA
-
-<p align="center">
-  <img width="80%" src="https://github.com/vishal-girhepunje/near-grade-564/blob/main/MGNREGA.jpg?raw=true">
-</p
-<img src="https://user-images.githubusercontent.com/100846744/193421061-eb252b3b-d59f-43d4-8d67-1e1d486fb644.png" alt="">
-The MGNREGA was initiated with the objective of “enhancing livelihood security in rural areas by providing at least 100 days of guaranteed wage employment in a financial year, to every household whose adult members volunteer to do unskilled manual work.
-
->
-> a. Block Development Officer(BDO)
->
-> b. Gram Panchayat member(GPM)
-> 
-> A project is created by BDO,which  is assigned to corresponding Gram panchayat Members. Gram Panchayat member has acccess to assign to Employees to Complete the Project.
 
 
 
 
 
-# MGNREGA - near-grade-564 
 
-> The MGNREGA is an java application designed to provide BDO and Gram Panchayat Member (GPM) of Block Office with a personalized easy-to-utilize user experience for creating, assigning and managing the project and employee . It stores GPM, Employee and project's data records, project assignments, wage/day, Total receivable amount till current date , and other information.
+# Online Hardware and SoftwareSupport System - fallacious-cover-2527
+
+> The system is an online platform that provides 24x7 access to employees, engineers, the Head of the Department, and the administration. It helps keep your IT staff productive with fast, accurate, remote technical support for your system environment. It provides defect support for a broad range of products running on system hardware. Factors to consider include cost of downtime, skills, retention, overheads, customer satisfaction, and many others.
 >
 >It is Console based Project.
 >
@@ -31,13 +18,13 @@ The MGNREGA was initiated with the objective of “enhancing livelihood security
 
 # Features 
 
-- BDO and GPM can login and logout.
-- BDO can create Project and GPM provide their detail.
-- BDO can see the List of Project, GPM amd Employee's along with all the detail.
-- BDO can assign project to GPM amd GPM can assign to Employee.
-- GPM can see the list of Employee and Amount receivable till date according to daily wage.
-- GPM can only assingn only those project which are assign to them by BDO.
-- GPM can only assingn project to Employee.
+- Online platform: The system should be available on an online platform for 24x7 access to employees, engineers, the head of the department, and the administration.
+- List of registered engineers: The HOD should be able to view a list of all registered engineers in the system.
+- Deleting engineers: The HOD should be able to delete any registered engineer from the system.
+- Viewing assigned problems: Engineers should be able to view the problems assigned to them by the HOD.
+- Updating problem status: Engineers should be able to update the status of the problem they have addressed, such as whether it has been solved or not.
+- Changing password: Engineers should be able to change their password for security reasons.
+- Changing password: Employees should be able to change their password for security reasons.
 - Many more .. 
 
 
