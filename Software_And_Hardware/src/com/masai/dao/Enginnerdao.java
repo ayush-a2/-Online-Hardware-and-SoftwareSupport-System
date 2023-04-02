@@ -18,4 +18,5 @@ public interface  Enginnerdao {
 	  public void updateProblemStatus(int problem_Id, String Status) throws SQLException, ClassNotFoundException ;
 	  public List<ProblemDto> getProblemsAttendedByEngineer(int engineerId) throws SQLException, ClassNotFoundException;
 	  public void changePassword(int engineerId, String oldPassword, String newPassword) throws InvalidCredentialsException;
+	  public String getComplaintsForEngineer(int engineerId) throws SQLException, ClassNotFoundException;
 }

@@ -121,8 +121,9 @@ static void getComplaintHistory(Scanner sc) {
 	int employeeId=sc.nextInt();	
 	EmployeeDao ed=new EmployeeDaoImpl();
 	try {
-	List<ProblemDto> pdt=	ed.getComplaintHistory(employeeId);
-		pdt.forEach(System.out::println);
+String msg =	ed.getComplaintHistory(employeeId);
+System.out.println("\u001B[31m" + msg + "\u001B[0m");
+	
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,5 +151,6 @@ static void EmployeePasswordChange(Scanner sc) {
 
 	
 }
+
 }
 

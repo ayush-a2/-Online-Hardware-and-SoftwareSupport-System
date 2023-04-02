@@ -73,4 +73,21 @@ public class EngineerUi {
 
 
 		}
+	static void getComplaintsForEngineer(Scanner sc) {
+		
+		System.out.println("Enter Engineer Id");
+		int engineer_id=sc.nextInt();
+		Enginnerdao ed=new EnginnerDaoImpl();
+		try {
+		String msg=	ed.getComplaintsForEngineer(engineer_id);
+		System.out.println("\u001B[31m" + msg + "\u001B[0m");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
