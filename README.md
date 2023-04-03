@@ -47,8 +47,8 @@ Functions of HOD:
 3. Can see List of all the Registered Engineers..
 4. Can delete any Engineers from the system.
 5. Can view all the raised problems.
-6. Allocate  Project to GPM
-7. Can assign any problem to any Engineer.
+
+6. Can assign any problem to any Engineer.
 
 <h2><<<<<<<<<<  Roles of Engineer>>>>>>>>> </h2>
 
